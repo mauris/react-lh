@@ -1,8 +1,9 @@
 module.exports = {
   extends: [
     "eslint:recommended",
+    "airbnb-base/legacy",
+    "plugin:react/recommended"
   ],
-  extends: "airbnb-base/legacy",
   settings: {
     react: {
       version: "detect"
@@ -17,7 +18,7 @@ module.exports = {
   },
   env: {
     browser: true,
-    mocha: true,
+    jest: true,
     node: true,
     es6: true
   },

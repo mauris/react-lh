@@ -17,7 +17,7 @@ export default function wrapper(WrappedComponent, namespace) {
     render() {
       const resultProps = {
         ...this.props,
-        channel: this.userChannel,
+        channel: this.userChannel
       };
       return (
         <WrappedComponent { ...resultProps } />

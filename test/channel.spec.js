@@ -108,12 +108,13 @@ test('receive should not go through when unsubscribed', () => {
     counterReceived += 1;
   });
 
-  randomLoop(() => {
+  const randomCount = randomLoop(() => {
     counterSent += 1;
     channelB.emit('count');
   });
 
   expect(counterReceived).toBe(0);
+  expect(counterSent).toBe(randomCount);
 });
 
 test('emit should not go through when unsubscribed', () => {
@@ -121,7 +122,6 @@ test('emit should not go through when unsubscribed', () => {
   const channelB = createChannel();
 
   let counterReceived = 0;
-  let counterSent = 0;
 
   channelB.unsubscribe();
   channelA.on('count', () => {
@@ -129,7 +129,6 @@ test('emit should not go through when unsubscribed', () => {
   });
 
   randomLoop(() => {
-    counterSent += 1;
     channelB.emit('count');
   });
 
