@@ -1,5 +1,7 @@
 # React Loud Hailer `react-lh`
 
+[![Build Status](https://travis-ci.org/mauris/react-lh.svg?branch=master)](https://travis-ci.org/mauris/react-lh) ![Dependencies](https://david-dm.org/mauris/react-lh.svg)
+
 Publish/subscribe implementation for efficient message passing between React components.
 
 ````javascript
