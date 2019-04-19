@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import LoudHailer from '../src/loudHailer';
+import loudHailer from '../src/loudHailer';
 import { createChannel } from '../src/channel';
 
 function TestComponent(props) {
@@ -15,7 +15,7 @@ function TestComponent(props) {
 }
 
 test('test component wrapping successfully', () => {
-  const WrappedTestComponent = LoudHailer(TestComponent);
+  const WrappedTestComponent = loudHailer(TestComponent);
 
   const component = renderer.create(
     <WrappedTestComponent text="testing" className="lead" />
@@ -26,7 +26,7 @@ test('test component wrapping successfully', () => {
 });
 
 test('test component communication successfully', () => {
-  const WrappedTestComponent = LoudHailer(TestComponent);
+  const WrappedTestComponent = loudHailer(TestComponent);
 
   let hasComponentCreated = false;
   const outsideChannel = createChannel();
@@ -42,7 +42,7 @@ test('test component communication successfully', () => {
 });
 
 test('test component communication successfully', () => {
-  const WrappedTestComponent = LoudHailer(TestComponent);
+  const WrappedTestComponent = loudHailer(TestComponent);
   const component = renderer.create(
     <WrappedTestComponent text="testing" className="lead" />
   );

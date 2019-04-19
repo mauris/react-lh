@@ -1,7 +1,7 @@
-import LoudHailer, { createChannel } from '../src';
+import loudHailer, { createChannel } from '../src';
 
-test('LoudHailer exported successfully', () => {
-  expect(typeof LoudHailer).toBe('function');
+test('loudHailer exported successfully', () => {
+  expect(typeof loudHailer).toBe('function');
 });
 
 test('createChannel exported successfully', () => {
