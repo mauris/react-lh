@@ -2,7 +2,7 @@
 
 Publish/subscribe implementation for efficient message passing between React components.
 
-````
+````javascript
 import React, { Component } from 'react';
 import loudHailer from 'react-lh';
 
