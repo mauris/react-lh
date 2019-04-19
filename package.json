@@ -1,0 +1,33 @@
+{
+  "name": "react-lh",
+  "version": "1.0.0",
+  "description": "📣 Loud Hailer publish/subscribe messenging implementation for React components.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint src test"
+  },
+  "author": "Sam Yong <samyonggit@gmail.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^16.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/plugin-proposal-decorators": "^7.4.0",
+    "@babel/plugin-proposal-export-default-from": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
+    "@babel/plugin-transform-runtime": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-react": "^7.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-deprecate": "^0.5.4",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-react": "^7.12.4",
+    "jest": "^24.7.1",
+    "jest-dom": "^3.1.3",
+    "react": "^16.8.6",
+    "react-test-renderer": "^16.8.6"
+  }
+}
