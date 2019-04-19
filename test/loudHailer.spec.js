@@ -1,5 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
+import PropTypes from 'prop-types';
 
 import loudHailer from '../src/loudHailer';
 import { createChannel } from '../src/channel';
@@ -13,6 +14,18 @@ function TestComponent(props) {
     </div>
   );
 }
+
+TestComponent.propTypes = {
+  text: PropTypes.string,
+  channel: PropTypes.shape({
+    on: PropTypes.func.isRequired,
+    emit: PropTypes.func.isRequired
+  }).isRequired
+};
+
+TestComponent.defaultProps = {
+  text: ''
+};
 
 test('test component wrapping successfully', () => {
   const WrappedTestComponent = loudHailer(TestComponent);
@@ -35,7 +48,7 @@ test('test component communication successfully', () => {
     hasComponentCreated = true;
   });
 
-  const component = renderer.create(
+  renderer.create(
     <WrappedTestComponent text="testing" className="lead" />
   );
   expect(hasComponentCreated).toBe(true);
