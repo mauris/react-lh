@@ -9,5 +9,8 @@ test/
 .gitignore
 .travis.yml
 
+# coverage files
+coverage
+
 # readme
 README.md
