@@ -1,6 +1,6 @@
 {
   "name": "react-lh",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "📣 Loud Hailer publish/subscribe messenging implementation for React components.",
   "main": "src/index.js",
   "scripts": {
@@ -33,6 +33,8 @@
     "react-test-renderer": "^16.8.6"
   },
   "jest": {
-    "setupFiles": ["jest-localstorage-mock"]
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ]
   }
 }
