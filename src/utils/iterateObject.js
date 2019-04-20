@@ -1,7 +1,7 @@
 export default function iterateObject(obj, handler) {
   const iteratorObj = {
     iterate: (cb) => {
-      return Object.keys(obj).map(key => cb(key, obj[key]));
+      return Object.keys(obj).map(key => cb({ key, value: obj[key] }));
     }
   };
 
