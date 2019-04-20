@@ -15,6 +15,9 @@ TestComponent.propTypes = {
   text: PropTypes.string,
   channel: PropTypes.shape({
     on: PropTypes.func.isRequired,
+    onAny: PropTypes.func.isRequired,
+    remove: PropTypes.func.isRequired,
+    removeAny: PropTypes.func.isRequired,
     emit: PropTypes.func.isRequired
   }).isRequired
 };
