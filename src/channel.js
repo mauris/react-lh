@@ -61,6 +61,7 @@ export function createChannel(instance, namespaceArg) {
       if (hasUnsubscribed) {
         return;
       }
+      addChannelSuperHandler();
       anyKeyHandlers.push(handler);
     },
 
