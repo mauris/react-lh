@@ -96,6 +96,28 @@ test('channels should handle multiple keys correctly', () => {
   });
 });
 
+test('handle remove subscriber correctly', () => {
+  const channelA = createChannel();
+  const channelB = createChannel();
+
+  let counterReceived = 0;
+  let counterSent = 0;
+
+  const handler = () => {
+    counterReceived += 1;
+  };
+  channelA.on('count', handler);
+  channelA.remove('count', handler);
+
+  const randomCount = randomLoop(() => {
+    counterSent += 1;
+    channelB.emit('count');
+  });
+
+  expect(counterReceived).toBe(0);
+  expect(counterSent).toBe(randomCount);
+});
+
 test('receive should not go through when unsubscribed', () => {
   const channelA = createChannel();
   const channelB = createChannel();
