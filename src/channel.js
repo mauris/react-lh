@@ -50,6 +50,13 @@ export function createChannel(instance, namespaceArg) {
 
       handlers[key].push(handler);
     },
+    remove: (key, handler) => {
+      if (handlers[key] === undefined) {
+        return;
+      }
+
+      handlers[key] = handlers[key].filter(x => x !== handler);
+    },
     emit: (key, ...message) => {
       if (hasUnsubscribed) {
         return;
