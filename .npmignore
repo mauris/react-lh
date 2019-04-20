@@ -1,0 +1,13 @@
+# tests
+test/
+
+# code specifications
+.babelrc.js
+.editorconfig
+.eslintrc.js
+.gitattributes
+.gitignore
+.travis.yml
+
+# readme
+README.md
