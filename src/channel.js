@@ -1,3 +1,5 @@
+import filterIsNot from './utils/filterIsNot';
+
 const channels = {};
 
 export function createChannel(instance, namespaceArg) {
@@ -11,12 +13,16 @@ export function createChannel(instance, namespaceArg) {
   }
 
   const handlers = {};
+  let anyKeyHandlers = [];
 
   /*
    * Handler function for this channel to receive
    * all messages broadcasted in the namespace.
    */
   const superHandler = (key, message) => {
+    anyKeyHandlers.forEach((handler) => {
+      handler(key, ...message);
+    });
     if (handlers[key] === undefined) {
       // no handlers
       return;
@@ -50,13 +56,26 @@ export function createChannel(instance, namespaceArg) {
 
       handlers[key].push(handler);
     },
+
+    onAny: (handler) => {
+      if (hasUnsubscribed) {
+        return;
+      }
+      anyKeyHandlers.push(handler);
+    },
+
     remove: (key, handler) => {
       if (handlers[key] === undefined) {
         return;
       }
 
-      handlers[key] = handlers[key].filter(x => x !== handler);
+      handlers[key] = filterIsNot(handlers[key], handler);
     },
+
+    removeAny: (handler) => {
+      anyKeyHandlers = filterIsNot(anyKeyHandlers, handler);
+    },
+
     emit: (key, ...message) => {
       if (hasUnsubscribed) {
         return;
@@ -66,6 +85,7 @@ export function createChannel(instance, namespaceArg) {
         remoteHandler(key, message);
       });
     },
+
     unsubscribe: () => {
       if (hasRegisteredGlobally) {
         channels[namespace] = channels[namespace].filter(n => n[0] !== instance);
