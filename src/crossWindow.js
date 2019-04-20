@@ -5,32 +5,28 @@ import { createChannel } from './channel';
 import iterateObject from './utils/iterateObject';
 
 const STORAGE_EVENT_KEY = 'storage';
+const STORAGE_LOCATION = window.localStorage;
 
 export default class CrossWindow extends Component {
   static get propTypes() {
     return {
-      type: PropTypes.oneOf(['local', 'session']),
-      channels: PropTypes.arrayOf(PropTypes.string).isRequired
-    };
-  }
-
-  static get defaultProps() {
-    return {
-      type: 'local',
+      channels: PropTypes.arrayOf(PropTypes.string).isRequired,
+      children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node
+      ])
     };
   }
 
   static getDerivedStateFromProps(props, state) {
     let changes = {};
 
-    const { channels, type } = props;
+    const { channels } = props;
 
     if (channels !== state.channels) {
       const tempOldContainer = {
         ...state.channelsContainer
       };
-
-      const storageLocation = `${type}Storage`;
 
       const newContainer = {};
       channels.forEach((channel) => {
@@ -38,7 +34,7 @@ export default class CrossWindow extends Component {
           // new one needs to be created
           const newChannel = createChannel(channel);
           newChannel.onAny((key, ...message) => {
-            window[storageLocation].setItem(`lh:${channel}:${key}`, JSON.stringify(message));
+            STORAGE_LOCATION.setItem(`lh:${channel}:${key}`, JSON.stringify(message));
           });
           newContainer[channel] = newChannel;
           return;
@@ -78,6 +74,11 @@ export default class CrossWindow extends Component {
       }
       const { channels, channelsContainer } = this.state;
 
+      if (storageEvent.storageArea !== STORAGE_LOCATION) {
+        // mismatched storage location
+        return;
+      }
+
       channels.forEach((channel) => {
         const channelKey = `lh:${channel}:`;
         if (!key.startsWith(channelKey)) {
@@ -86,7 +87,7 @@ export default class CrossWindow extends Component {
         const messageKey = key.substring(channelKey.length);
         const { newValue } = storageEvent;
         const message = JSON.parse(newValue);
-        channelsContainer[channel].emit.apply(null, [key, ...message]);
+        channelsContainer[channel].emit.apply(null, [messageKey, ...message]);
       });
     };
 
