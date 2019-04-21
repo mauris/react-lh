@@ -2,8 +2,10 @@
   "name": "react-lh",
   "version": "1.0.2",
   "description": "📣 Loud Hailer publish/subscribe messenging implementation for React components.",
-  "main": "src/index.js",
+  "main": "./lib/index.js",
   "scripts": {
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
+    "build": "npm run build:commonjs",
     "test": "jest",
     "lint": "eslint src test"
   },
