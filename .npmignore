@@ -9,6 +9,9 @@ test/
 .gitignore
 .travis.yml
 
+# src folder
+src
+
 # coverage files
 coverage
 
