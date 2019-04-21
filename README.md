@@ -59,7 +59,16 @@ import loudHailer from 'react-lh';
 
 function FuncComponent(props) {
   const { channel } = props;
-  // ...
+
+  const buttonClickHandler = () => {
+    channel.emit('ButtonClicked');
+  };
+
+  return (
+    <button onClick={buttonClickHandler}>
+      Press me
+    </button>
+  )
 }
 
 export default loudHailer(FuncComponent);
@@ -80,12 +89,12 @@ import App from './App';
 
 const channels = ['default'];
 
-React.render(
+ReactDOM.render(
   <CrossWindow channels={channels}>
     <App />
   </CrossWindow>,
   document.getElementById('root')
-)
+);
 ````
 
 The `channels` property indicate which channels can be communicated across all the open windows of your website. The default channel namespace is `'default'`.
