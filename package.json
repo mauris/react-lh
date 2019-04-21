@@ -1,6 +1,6 @@
 {
   "name": "react-lh",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "📣 Loud Hailer publish/subscribe messenging implementation for React components.",
   "main": "./lib/index.js",
   "scripts": {
