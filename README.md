@@ -2,7 +2,17 @@
 
 [![Build Status](https://travis-ci.org/mauris/react-lh.svg?branch=master)](https://travis-ci.org/mauris/react-lh) ![Dependencies](https://david-dm.org/mauris/react-lh.svg)
 
-Publish/subscribe implementation for efficient message passing between React components.
+Publish/subscribe implementation for efficient message passing between [React](https://reactjs.org/) components.
+
+## Usage
+
+To install `react-lh` with your existing React app, run either:
+
+    $ npm install --save react-lh
+
+or if using Yarn:
+
+    $ yarn add react-lh
 
 ````javascript
 import React, { Component } from 'react';
