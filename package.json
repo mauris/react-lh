@@ -3,6 +3,7 @@
   "version": "1.0.3",
   "description": "📣 React Loud Hailer: Publish/subscribe implementation for efficient message passing between React components.",
   "main": "./lib/index.js",
+  "repository": "https://github.com/mauris/react-lh.git",
   "scripts": {
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build": "npm run build:commonjs",
