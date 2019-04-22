@@ -118,6 +118,28 @@ test('handle remove subscriber correctly', () => {
   expect(counterSent).toBe(randomCount);
 });
 
+test('handle remove non-existent listener correctly', () => {
+  const channelA = createChannel();
+  const channelB = createChannel();
+
+  let counterReceived = 0;
+  let counterSent = 0;
+
+  const handler = () => {
+    counterReceived += 1;
+  };
+  channelA.on('countB', handler);
+  channelA.remove('countA', handler);
+
+  const randomCount = randomLoop(() => {
+    counterSent += 1;
+    channelB.emit('countB');
+  });
+
+  expect(counterReceived).toBe(randomCount);
+  expect(counterSent).toBe(randomCount);
+});
+
 test('receive should not go through when unsubscribed', () => {
   const channelA = createChannel();
   const channelB = createChannel();
@@ -210,6 +232,34 @@ test('onAny should not handle after unsubscribe', () => {
   channelA.onAny((key) => {
     counterReceived += 1;
   });
+
+  const randomCount = randomLoop(() => {
+    counterSent += 1;
+    channelB.emit(keys[Math.floor(Math.random() * keys.length)]);
+  });
+  expect(counterSent).toBe(randomCount);
+  expect(counterReceived).toBe(0);
+});
+
+test('removing onAny listener works', () => {
+  const channelA = createChannel();
+  const channelB = createChannel();
+
+  const keys = [
+    'kA',
+    'kB',
+    'kC'
+  ];
+
+  let counterReceived = 0;
+  let counterSent = 0;
+
+  const anyHandler = (key) => {
+    counterReceived += 1;
+  };
+
+  channelA.onAny(anyHandler);
+  channelA.removeAny(anyHandler);
 
   const randomCount = randomLoop(() => {
     counterSent += 1;
