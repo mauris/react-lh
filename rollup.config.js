@@ -13,6 +13,7 @@ const config = {
   output: {
     format: 'umd',
     name: 'LoudHailer',
+    exports: 'named',
     globals: {
       react: 'React'
     }
