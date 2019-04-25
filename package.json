@@ -10,7 +10,8 @@
     "build:umd:min": "cross-env NODE_ENV=production rollup -c -o dist/react-lh.min.js",
     "build": "npm run build:commonjs && npm run build:umd && npm run build:umd:min",
     "test": "jest",
-    "lint": "eslint src test"
+    "lint": "eslint src test",
+    "prepublishOnly": "npm test -- --coverage && npm run lint && npm run build"
   },
   "author": "Sam Yong <samyonggit@gmail.com>",
   "license": "MIT",
