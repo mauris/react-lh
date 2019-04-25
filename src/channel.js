@@ -112,6 +112,12 @@ export function createChannel(instance, namespaceArg) {
       });
     },
 
+    emitAsync: (...args) => {
+      setTimeout(() => {
+        channelObj.emit(...args);
+      }, 0);
+    },
+
     unsubscribe: () => {
       if (hasUnsubscribed) {
         return;
