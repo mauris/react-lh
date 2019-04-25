@@ -1,23 +1,36 @@
 import React, { Component } from 'react';
+import getProperty from './utils/getProperty';
 import { createChannel } from './channel';
 
-export default function wrapper(WrappedComponent, namespace) {
+const PROPERTY_NAMESPACE = 'namespace';
+const PROPERTY_CHANNEL_PROP_NAME = 'property';
+const PROPERTY_CHANNEL_PROP_NAME_DEFAULT = 'channel';
+
+export default function wrapper(WrappedComponent, options) {
+  const namespace = getProperty(options, PROPERTY_NAMESPACE);
+  const channelPropertyName = getProperty(
+    options,
+    PROPERTY_CHANNEL_PROP_NAME,
+    PROPERTY_CHANNEL_PROP_NAME_DEFAULT
+  );
+
   return class Connect extends Component {
     constructor(props) {
       super(props);
-      this.channel = createChannel(this, namespace);
-      const { unsubscribe, ...userChannel } = this.channel;
+      const channel = createChannel(this, namespace);
+      const { unsubscribe, ...userChannel } = channel;
       this.userChannel = userChannel;
+      this.unsubscribe = unsubscribe;
     }
 
     componentWillUnmount() {
-      this.channel.unsubscribe();
+      this.unsubscribe();
     }
 
     render() {
       const resultProps = {
         ...this.props,
-        channel: this.userChannel
+        [channelPropertyName]: this.userChannel
       };
       return (
         <WrappedComponent { ...resultProps } />
