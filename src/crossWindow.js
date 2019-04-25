@@ -10,12 +10,19 @@ const STORAGE_LOCATION = window.localStorage;
 export default class CrossWindow extends Component {
   static get propTypes() {
     return {
-      channels: PropTypes.arrayOf(PropTypes.string).isRequired,
+      channels: PropTypes.arrayOf(PropTypes.string),
       children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
       ])
     };
+  }
+
+  static get defaultProps() {
+    return {
+      channels: ['default'],
+      children: []
+    }
   }
 
   static getDerivedStateFromProps(props, state) {
