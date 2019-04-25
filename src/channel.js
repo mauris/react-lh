@@ -44,25 +44,45 @@ export function createChannel(instance, namespaceArg) {
 
   let hasUnsubscribed = false;
 
-  return {
-    on: (key, handler) => {
-      if (hasUnsubscribed) {
-        return;
-      }
-      addChannelSuperHandler();
-      if (handlers[key] === undefined) {
-        handlers[key] = [];
-      }
+  const subscribeInit = (callback) => {
+    if (hasUnsubscribed) {
+      return;
+    }
+    addChannelSuperHandler();
+    callback();
+  };
 
-      handlers[key].push(handler);
+  const channelObj = {
+    on: (key, handler) => {
+      subscribeInit(() => {
+        if (handlers[key] === undefined) {
+          handlers[key] = [];
+        }
+
+        handlers[key].push(handler);
+      });
+    },
+
+    once: (key, handler) => {
+      const wrappedHandler = (...args) => {
+        handler(...args);
+        channelObj.remove(key, wrappedHandler);
+      };
+      channelObj.on(key, wrappedHandler);
     },
 
     onAny: (handler) => {
-      if (hasUnsubscribed) {
-        return;
-      }
-      addChannelSuperHandler();
-      anyKeyHandlers.push(handler);
+      subscribeInit(() => {
+        anyKeyHandlers.push(handler);
+      });
+    },
+
+    onceAny: (handler) => {
+      const wrappedHandler = (...args) => {
+        handler(...args);
+        channelObj.removeAny(wrappedHandler);
+      };
+      channelObj.onAny(wrappedHandler);
     },
 
     remove: (key, handler) => {
@@ -94,4 +114,6 @@ export function createChannel(instance, namespaceArg) {
       hasUnsubscribed = true;
     }
   };
+
+  return channelObj;
 }
