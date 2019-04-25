@@ -1,6 +1,6 @@
 # React Loud Hailer `react-lh`
 
-[![Build Status](https://travis-ci.org/mauris/react-lh.svg?branch=master)](https://travis-ci.org/mauris/react-lh) ![Dependencies](https://david-dm.org/mauris/react-lh.svg) ![npm bundle size](https://img.shields.io/bundlephobia/min/react-lh.svg?style=popout) ![npm](https://img.shields.io/npm/dt/react-lh.svg?style=popout)
+[![Build Status](https://travis-ci.org/mauris/react-lh.svg?branch=master)](https://travis-ci.org/mauris/react-lh) [![peerDependencies Status](https://david-dm.org/mauris/react-lh/peer-status.svg)](https://david-dm.org/mauris/react-lh?type=peer) [![dependencies Status](https://david-dm.org/mauris/react-lh/status.svg)](https://david-dm.org/mauris/react-lh) [![npm bundle size](https://img.shields.io/bundlephobia/min/react-lh.svg?style=popout)](https://www.npmjs.com/package/react-lh) [![npm](https://img.shields.io/npm/dt/react-lh.svg?style=popout)](https://www.npmjs.com/package/react-lh)
 
 Publish/subscribe implementation for efficient message passing between [React](https://reactjs.org/) components.
 
