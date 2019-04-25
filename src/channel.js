@@ -108,6 +108,9 @@ export function createChannel(instance, namespaceArg) {
     },
 
     unsubscribe: () => {
+      if (hasUnsubscribed) {
+        return;
+      }
       if (hasRegisteredGlobally) {
         channels[namespace] = channels[namespace].filter(n => n[0] !== instance);
       }
