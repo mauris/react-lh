@@ -27,7 +27,8 @@ class MyComponent extends Component {
     const { channel } = this.props;
 
     channel.on('SomeOtherActionOccurred', () => {
-      // handle the consequence
+      // a function that executes whenever the event
+      // "SomeOtherActionOccurred" is fired
     });
   }
 
@@ -35,7 +36,7 @@ class MyComponent extends Component {
     return () => {
       const { channel } = this.props;
 
-      // tell subscribers that the button was clicked
+      // fires the event "ButtonClicked"
       channel.emit('ButtonClicked');
     }
   }
@@ -49,6 +50,7 @@ class MyComponent extends Component {
   }
 }
 
+// wrap the component using Loud Hailer before exporting
 export default loudHailer(MyComponent);
 ````
 
@@ -71,10 +73,31 @@ function FuncComponent(props) {
   )
 }
 
+// wrap the component using Loud Hailer before exporting
 export default loudHailer(FuncComponent);
 ````
 
-The Loud Hailer API will be accessible through the `channel` props property.
+By default, the Loud Hailer API will be accessible through the `channel` props property. The property name can be changed by passing an option to Loud Hailer wrapper's second options argument like this:
+
+````javascript
+import loudHailer from 'react-lh';
+
+function FuncComponent(props) {
+  // notice that "pipe" is used here
+  const { pipe } = props;
+
+  const buttonClickHandler = () => {
+    pipe.emit('ButtonClicked');
+  };
+
+  // ...
+}
+
+const options = {
+  property: 'pipe'
+};
+export default loudHailer(FuncComponent, options);
+````
 
 ### Cross-Window Event Propagation
 
