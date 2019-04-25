@@ -16,6 +16,8 @@ or if using Yarn:
 
 ## Usage
 
+*Recommended*: [Example Todo App on JSFiddle](https://jsfiddle.net/mauris/bzwm9f0n/) - The Todo App example demonstrates how facilitate inter-component communications and enable decoupling between them.
+
 After installing `react-lh` to your React app, you need to wrap components that you wish to access the Loud Hailer API with the `loudHailer()` function like that:
 
 ````javascript
