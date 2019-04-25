@@ -58,6 +58,25 @@ test('two channels can communicate with arguments', () => {
   expect(counterSent).toBe(counterReceived);
 });
 
+test('once works', () => {
+  const channelA = createChannel();
+  const channelB = createChannel();
+
+  let counterReceived = 0;
+  let counterSent = 0;
+
+  channelA.once('count', (message) => {
+    counterReceived += message;
+  });
+
+  const randomCount = randomLoop(() => {
+    counterSent += 1;
+    channelB.emit('count', 1);
+  });
+  expect(counterSent).toBe(randomCount);
+  expect(counterReceived).toBe(1);
+});
+
 test('channels should handle multiple keys correctly', () => {
   const channelA = createChannel();
   const channelB = createChannel();
