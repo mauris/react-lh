@@ -52,6 +52,13 @@ export function createChannel(instance, namespaceArg) {
     callback();
   };
 
+  const appendFunctions = (funcA, funcB) => {
+    return (...args) => {
+      funcA(...args);
+      funcB(...args);
+    };
+  };
+
   const channelObj = {
     on: (key, handler) => {
       subscribeInit(() => {
@@ -64,10 +71,9 @@ export function createChannel(instance, namespaceArg) {
     },
 
     once: (key, handler) => {
-      const wrappedHandler = (...args) => {
-        handler(...args);
+      const wrappedHandler = appendFunctions(handler, () => {
         channelObj.remove(key, wrappedHandler);
-      };
+      });
       channelObj.on(key, wrappedHandler);
     },
 
@@ -78,10 +84,9 @@ export function createChannel(instance, namespaceArg) {
     },
 
     onceAny: (handler) => {
-      const wrappedHandler = (...args) => {
-        handler(...args);
+      const wrappedHandler = appendFunctions(handler, () => {
         channelObj.removeAny(wrappedHandler);
-      };
+      });
       channelObj.onAny(wrappedHandler);
     },
 
