@@ -17,3 +17,6 @@ coverage
 
 # readme
 README.md
+
+rollup.config.js
+dist/react-lh.js
