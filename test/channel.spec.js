@@ -39,6 +39,25 @@ test('two channels can communicate', () => {
   expect(counterReceived).toBe(randomCount);
 });
 
+test('two channels of differnt namespace should not communicate', () => {
+  const channelA = createChannel(null, 'ns1');
+  const channelB = createChannel(null, 'ns2');
+
+  let counterReceived = 0;
+  let counterSent = 0;
+
+  channelA.on('count', () => {
+    counterReceived += 1;
+  });
+
+  const randomCount = randomLoop(() => {
+    counterSent += 1;
+    channelB.emit('count');
+  });
+  expect(counterSent).toBe(randomCount);
+  expect(counterReceived).toBe(0);
+});
+
 test('two channels can communicate with arguments', () => {
   const channelA = createChannel();
   const channelB = createChannel();
