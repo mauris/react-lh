@@ -214,6 +214,32 @@ test('onAny works', () => {
   expect(counterReceived).toBe(randomCount);
 });
 
+test('onceAny works', () => {
+  const channelA = createChannel();
+  const channelB = createChannel();
+
+  const keys = [
+    'kA',
+    'kB',
+    'kC'
+  ];
+
+  let counterReceived = 0;
+  let counterSent = 0;
+
+  channelA.onceAny((key) => {
+    expect(keys.indexOf(key)).not.toBe(-1);
+    counterReceived += 1;
+  });
+
+  const randomCount = randomLoop(() => {
+    counterSent += 1;
+    channelB.emit(keys[Math.floor(Math.random() * keys.length)]);
+  });
+  expect(counterSent).toBe(randomCount);
+  expect(counterReceived).toBe(1);
+});
+
 test('onAny should not handle after unsubscribe', () => {
   const channelA = createChannel();
   const channelB = createChannel();
