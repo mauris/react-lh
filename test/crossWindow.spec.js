@@ -13,12 +13,11 @@ test('CrossWindow exported successfully', () => {
 });
 
 test('emit successfully', () => {
-  const component = renderer.create(
+  renderer.create(
     <CrossWindow channels={['default']}>
       <WrappedTestComponent text="testing" className="lead" />
     </CrossWindow>
   );
 
-  const description = component.toJSON();
   expect(localStorage.setItem).toHaveBeenLastCalledWith('lh:default:TestComponent:created', '[]');
 });

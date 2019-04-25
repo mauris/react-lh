@@ -293,7 +293,7 @@ test('onAny should not handle after unsubscribe', () => {
   let counterReceived = 0;
   let counterSent = 0;
 
-  channelA.onAny((key) => {
+  channelA.onAny(() => {
     counterReceived += 1;
   });
 
@@ -318,7 +318,7 @@ test('removing onAny listener works', () => {
   let counterReceived = 0;
   let counterSent = 0;
 
-  const anyHandler = (key) => {
+  const anyHandler = () => {
     counterReceived += 1;
   };
 
