@@ -39,6 +39,31 @@ test('two channels can communicate', () => {
   expect(counterReceived).toBe(randomCount);
 });
 
+test('channel can add more than one handler to same key', () => {
+  const channelA = createChannel();
+  const channelB = createChannel();
+
+  let counterReceivedA = 0;
+  let counterReceivedB = 0;
+  let counterSent = 0;
+
+  channelA.on('count', () => {
+    counterReceivedA += 1;
+  });
+
+  channelA.on('count', () => {
+    counterReceivedB += 1;
+  });
+
+  const randomCount = randomLoop(() => {
+    counterSent += 1;
+    channelB.emit('count');
+  });
+  expect(counterSent).toBe(randomCount);
+  expect(counterReceivedA).toBe(randomCount);
+  expect(counterReceivedB).toBe(randomCount);
+});
+
 test('two channels of differnt namespace should not communicate', () => {
   const channelA = createChannel(null, 'ns1');
   const channelB = createChannel(null, 'ns2');
@@ -303,6 +328,14 @@ test('onAny should not handle after unsubscribe', () => {
   });
   expect(counterSent).toBe(randomCount);
   expect(counterReceived).toBe(0);
+});
+
+test('can unsubscribe multiple times', () => {
+  const channelA = createChannel();
+  channelA.unsubscribe();
+  randomLoop(() => {
+    channelA.unsubscribe();
+  });
 });
 
 test('removing onAny listener works', () => {
