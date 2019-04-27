@@ -19,7 +19,7 @@ export default function wrapper(WrappedComponent, options) {
       super(props);
       const channel = createChannel(this, namespace);
       const { unsubscribe, ...userChannel } = channel;
-      this.userChannel = userChannel;
+      this.channel = userChannel;
       this.unsubscribe = unsubscribe;
     }
 
@@ -30,7 +30,7 @@ export default function wrapper(WrappedComponent, options) {
     render() {
       const resultProps = {
         ...this.props,
-        [channelPropertyName]: this.userChannel
+        [channelPropertyName]: this.channel
       };
       return (
         <WrappedComponent { ...resultProps } />
