@@ -1,6 +1,6 @@
 {
   "name": "react-lh",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "📣 React Loud Hailer: Publish/subscribe implementation for efficient message passing between React components.",
   "main": "./lib/index.js",
   "repository": "https://github.com/mauris/react-lh.git",
