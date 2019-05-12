@@ -22,7 +22,7 @@ export default class CrossWindow extends Component {
     return {
       channels: ['default'],
       children: []
-    }
+    };
   }
 
   static getDerivedStateFromProps(props, state) {
