@@ -40,3 +40,9 @@ test('test component communication successfully', () => {
   );
   component.unmount();
 });
+
+test('test get wrapped instance successfully', () => {
+  const WrappedTestComponent = loudHailer(TestComponent);
+  const component = new WrappedTestComponent({});
+  expect(typeof component.getInstance()).toBe('object');
+});

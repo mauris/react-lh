@@ -38,7 +38,7 @@ export default function wrapper(WrappedComponent, options) {
       this.unsubscribe = unsubscribe;
       this.state = {
         channel: userChannel,
-        component: Connect.buildComponentFromProps(props, userChannel)
+        [STATE_PROPERTY_NAME]: Connect.buildComponentFromProps(props, userChannel)
       };
     }
 
@@ -46,7 +46,7 @@ export default function wrapper(WrappedComponent, options) {
       this.unsubscribe();
     }
 
-    get instance() {
+    getInstance() {
       return this.state[STATE_PROPERTY_NAME];
     }
 
