@@ -18,6 +18,19 @@ or if using Yarn:
 
 *Recommended*: [Example Todo App on JSFiddle](https://jsfiddle.net/mauris/bzwm9f0n/) - The Todo App example demonstrates how facilitate inter-component communications and enable decoupling between them.
 
+The following examples uses the ECMA 9 features. If you wish to use it in CommonJS module system (i.e. in Node.js natively), you need to use `require()` like so:
+
+````javascript
+const reactlh = require('react-lh');
+const loudHailer = reactlh.loudHailer;
+````
+
+or concisely as:
+
+````javascript
+const { loudHailer } = require('react-lh');
+````
+
 After installing `react-lh` to your React app, you need to wrap components that you wish to access the Loud Hailer API with the `loudHailer()` function like that:
 
 ````javascript
