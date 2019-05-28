@@ -3,12 +3,15 @@
   "version": "1.0.6",
   "description": "📣 React Loud Hailer: Publish/subscribe implementation for efficient message passing between React components.",
   "main": "./lib/index.js",
+  "unpkg": "./dist/react-lh.js",
+  "module": "./es/index.js",
   "repository": "https://github.com/mauris/react-lh.git",
   "scripts": {
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build:umd": "cross-env NODE_ENV=development rollup -c -o dist/react-lh.js",
     "build:umd:min": "cross-env NODE_ENV=production rollup -c -o dist/react-lh.min.js",
-    "build": "npm run build:commonjs && npm run build:umd && npm run build:umd:min",
+    "build:es": "babel src --out-dir es",
+    "build": "npm run build:commonjs && npm run build:umd && npm run build:umd:min && npm run build:es",
     "test": "jest",
     "lint": "eslint src test",
     "prepublishOnly": "npm test -- --coverage && npm run lint && npm run build"
