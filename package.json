@@ -27,6 +27,12 @@
     "library",
     "message"
   ],
+  "files": [
+    "dist",
+    "lib",
+    "src",
+    "es"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",

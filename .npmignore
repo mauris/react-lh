@@ -9,9 +9,6 @@ test/
 .gitignore
 .travis.yml
 
-# src folder
-src
-
 # coverage files
 coverage
 
@@ -19,4 +16,3 @@ coverage
 README.md
 
 rollup.config.js
-dist/react-lh.js
