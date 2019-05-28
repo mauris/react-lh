@@ -2,9 +2,9 @@
   "name": "react-lh",
   "version": "1.0.12",
   "description": "📣 React Loud Hailer: Publish/subscribe implementation for efficient message passing between React components.",
-  "main": "./lib/index.js",
-  "unpkg": "./dist/react-lh.js",
-  "module": "./es/index.js",
+  "main": "lib/index.js",
+  "unpkg": "dist/react-lh.min.js",
+  "module": "es/index.js",
   "repository": "https://github.com/mauris/react-lh.git",
   "scripts": {
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",

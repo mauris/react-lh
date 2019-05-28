@@ -7,7 +7,7 @@ module.exports = {
   plugins: [
     ['@babel/proposal-decorators', { legacy: true }],
     ['@babel/proposal-object-rest-spread', { loose }],
-    '@babel/transform-react-jsx',
+    ['@babel/transform-react-jsx'],
     cjs && ['@babel/transform-modules-commonjs', { loose }],
     ['@babel/transform-runtime', { useESModules: !cjs }],
     ['@babel/proposal-export-default-from'],
