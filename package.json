@@ -1,6 +1,6 @@
 {
   "name": "react-lh",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "📣 React Loud Hailer: Publish/subscribe implementation for efficient message passing between React components.",
   "main": "./lib/index.js",
   "unpkg": "./dist/react-lh.js",
