@@ -3,7 +3,7 @@ const cjs = NODE_ENV === 'test' || BABEL_ENV === 'commonjs';
 const loose = true;
 
 module.exports = {
-  presets: ["@babel/react", ['@babel/env', { loose }]],
+  presets: ["@babel/react", ['@babel/env', { loose, modules: false }]],
   plugins: [
     ['@babel/proposal-decorators', { legacy: true }],
     ['@babel/proposal-object-rest-spread', { loose }],
