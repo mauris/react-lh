@@ -30,7 +30,6 @@
   "files": [
     "dist",
     "lib",
-    "src",
     "es"
   ],
   "dependencies": {
