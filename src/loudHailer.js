@@ -7,6 +7,14 @@ const PROPERTY_CHANNEL_PROP_NAME = 'property';
 const PROPERTY_CHANNEL_PROP_NAME_DEFAULT = 'channel';
 const STATE_PROPERTY_NAME = 'instance';
 
+const buildComponentFromProps = (WrappedComponent, channelPropertyName, props, channel) => {
+  const resultProps = {
+    ...props,
+    [channelPropertyName]: channel
+  };
+  return new WrappedComponent(resultProps);
+};
+
 export default function wrapper(WrappedComponent, options) {
   const namespace = getProperty(options, PROPERTY_NAMESPACE);
   const channelPropertyName = getProperty(
@@ -25,9 +33,13 @@ export default function wrapper(WrappedComponent, options) {
     }
 
     static getDerivedStateFromProps(props, state) {
-      const newState = {
-        [STATE_PROPERTY_NAME]: Connect.buildComponentFromProps(props, state.channel)
-      };
+      const newState = {};
+      newState[STATE_PROPERTY_NAME] = buildComponentFromProps(
+        WrappedComponent,
+        channelPropertyName,
+        props,
+        state.channel
+      );
       return newState;
     }
 
