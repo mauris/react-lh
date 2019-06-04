@@ -24,14 +24,6 @@ export default function wrapper(WrappedComponent, options) {
   );
 
   return class Connect extends Component {
-    static buildComponentFromProps(props, channel) {
-      const resultProps = {
-        ...props,
-        [channelPropertyName]: channel
-      };
-      return new WrappedComponent(resultProps);
-    }
-
     static getDerivedStateFromProps(props, state) {
       const newState = {};
       newState[STATE_PROPERTY_NAME] = buildComponentFromProps(
@@ -50,7 +42,12 @@ export default function wrapper(WrappedComponent, options) {
       this.unsubscribe = unsubscribe;
       this.state = {
         channel: userChannel,
-        [STATE_PROPERTY_NAME]: Connect.buildComponentFromProps(props, userChannel)
+        [STATE_PROPERTY_NAME]: buildComponentFromProps(
+          WrappedComponent,
+          channelPropertyName,
+          props,
+          userChannel
+        )
       };
     }
 
