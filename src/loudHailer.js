@@ -50,7 +50,6 @@ export default function wrapper(WrappedComponent, options) {
     }
 
     render() {
-      console.log(this.state);
       return this.state[STATE_PROPERTY_NAME];
     }
   };
