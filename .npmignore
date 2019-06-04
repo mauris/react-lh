@@ -12,6 +12,9 @@ test/
 # coverage files
 coverage
 
+# source
+src
+
 # readme
 README.md
 
