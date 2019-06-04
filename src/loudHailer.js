@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import getProperty from './utils/getProperty';
 import { createChannel } from './channel';
 
@@ -6,14 +6,6 @@ const PROPERTY_NAMESPACE = 'namespace';
 const PROPERTY_CHANNEL_PROP_NAME = 'property';
 const PROPERTY_CHANNEL_PROP_NAME_DEFAULT = 'channel';
 const STATE_PROPERTY_NAME = 'instance';
-
-const buildComponentFromProps = (WrappedComponent, channelPropertyName, props, channel) => {
-  const resultProps = {
-    ...props,
-    [channelPropertyName]: channel
-  };
-  return new WrappedComponent(resultProps);
-};
 
 export default function wrapper(WrappedComponent, options) {
   const namespace = getProperty(options, PROPERTY_NAMESPACE);
@@ -23,15 +15,18 @@ export default function wrapper(WrappedComponent, options) {
     PROPERTY_CHANNEL_PROP_NAME_DEFAULT
   );
 
+  const buildComponentFromProps = (props, channel) => {
+    const resultProps = {
+      ...props,
+      [channelPropertyName]: channel
+    };
+    return React.createElement(WrappedComponent, resultProps);
+  };
+
   return class Connect extends Component {
     static getDerivedStateFromProps(props, state) {
       const newState = {};
-      newState[STATE_PROPERTY_NAME] = buildComponentFromProps(
-        WrappedComponent,
-        channelPropertyName,
-        props,
-        state.channel
-      );
+      newState[STATE_PROPERTY_NAME] = buildComponentFromProps(props, state.channel);
       return newState;
     }
 
@@ -42,12 +37,7 @@ export default function wrapper(WrappedComponent, options) {
       this.unsubscribe = unsubscribe;
       this.state = {
         channel: userChannel,
-        [STATE_PROPERTY_NAME]: buildComponentFromProps(
-          WrappedComponent,
-          channelPropertyName,
-          props,
-          userChannel
-        )
+        [STATE_PROPERTY_NAME]: buildComponentFromProps(props, userChannel)
       };
     }
 
@@ -60,6 +50,7 @@ export default function wrapper(WrappedComponent, options) {
     }
 
     render() {
+      console.log(this.state);
       return this.state[STATE_PROPERTY_NAME];
     }
   };
