@@ -42,7 +42,7 @@ export default class CrossWindow extends Component {
           // new one needs to be created
           const newChannel = createChannel(channel);
           newChannel.onAny((key, ...message) => {
-            STORAGE_LOCATION.setItem(`lh:${channel}:${key}`, JSON.stringify(message));
+            STORAGE_LOCATION.setItem(`lh:${channel}`, JSON.stringify({key, message}));
           });
           newContainer[channel] = newChannel;
           return;
@@ -89,14 +89,13 @@ export default class CrossWindow extends Component {
       }
 
       channels.forEach((channel) => {
-        const channelKey = `lh:${channel}:`;
-        if (!key.startsWith(channelKey)) {
+        const channelKey = `lh:${channel}`;
+        if (key !== channelKey) {
           return;
         }
-        const messageKey = key.substring(channelKey.length);
         const { newValue } = storageEvent;
-        const message = JSON.parse(newValue);
-        channelsContainer[channel].emit.apply(null, [messageKey, ...message]);
+        const { key, message } = JSON.parse(newValue);
+        channelsContainer[channel].emit.apply(null, [key, ...message]);
       });
     };
 
