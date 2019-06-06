@@ -111,7 +111,7 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
         return;
       }
       channels[namespace].handlers
-        .forEach(([ otherInstance, remoteHandler ]) => {
+        .forEach(([, remoteHandler]) => {
           remoteHandler(key, message);
         });
     },
