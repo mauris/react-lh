@@ -20,8 +20,8 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
 
   const namespaceStore = channels[namespace].store;
 
-  const handlers = {};
-  let anyKeyHandlers = [];
+  const channelHandlers = {};
+  let anyKeyChannelHandlers = [];
 
   // flags
   let hasRegisteredGlobally = false;
@@ -32,15 +32,15 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
    * all messages broadcasted in the namespace.
    */
   const superHandler = (key, message) => {
-    anyKeyHandlers.forEach((handler) => {
+    anyKeyChannelHandlers.forEach((handler) => {
       handler(key, ...message);
     });
-    if (handlers[key] === undefined) {
+    if (channelHandlers[key] === undefined) {
       // no handlers
       return;
     }
 
-    handlers[key].forEach((handler) => {
+    channelHandlers[key].forEach((handler) => {
       handler(...message);
     });
   };
@@ -49,8 +49,7 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
     if (hasRegisteredGlobally) {
       return;
     }
-    const { handlers } = channels[namespace];
-    handlers.push([instance, superHandler]);
+    channels[namespace].handlers.push([instance, superHandler]);
     hasRegisteredGlobally = true;
   };
 
@@ -67,11 +66,11 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
 
     on: (key, handler) => {
       subscribeInit(() => {
-        if (handlers[key] === undefined) {
-          handlers[key] = [];
+        if (channelHandlers[key] === undefined) {
+          channelHandlers[key] = [];
         }
 
-        handlers[key].push(handler);
+        channelHandlers[key].push(handler);
       });
     },
 
@@ -84,7 +83,7 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
 
     onAny: (handler) => {
       subscribeInit(() => {
-        anyKeyHandlers.push(handler);
+        anyKeyChannelHandlers.push(handler);
       });
     },
 
@@ -96,25 +95,25 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
     },
 
     remove: (key, handler) => {
-      if (handlers[key] === undefined) {
+      if (channelHandlers[key] === undefined) {
         return;
       }
 
-      handlers[key] = filterIsNot(handlers[key], handler);
+      channelHandlers[key] = filterIsNot(channelHandlers[key], handler);
     },
 
     removeAny: (handler) => {
-      anyKeyHandlers = filterIsNot(anyKeyHandlers, handler);
+      anyKeyChannelHandlers = filterIsNot(anyKeyChannelHandlers, handler);
     },
 
     emit: (key, ...message) => {
       if (hasUnsubscribed) {
         return;
       }
-      channels[namespace].forEach((tuple) => {
-        const remoteHandler = tuple[1];
-        remoteHandler(key, message);
-      });
+      channels[namespace].handlers
+        .forEach(([ otherInstance, remoteHandler ]) => {
+          remoteHandler(key, message);
+        });
     },
 
     emitAsync: (...args) => {
@@ -128,7 +127,9 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
         return;
       }
       if (hasRegisteredGlobally) {
-        channels[namespace] = channels[namespace].filter(n => n[0] !== instance);
+        channels[namespace].handlers = channels[namespace]
+          .handlers
+          .filter(n => n[0] !== instance);
       }
       hasUnsubscribed = true;
     }
