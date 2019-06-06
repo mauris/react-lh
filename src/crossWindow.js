@@ -42,7 +42,7 @@ export default class CrossWindow extends Component {
           // new one needs to be created
           const newChannel = createChannel(channel);
           newChannel.onAny((key, ...message) => {
-            STORAGE_LOCATION.setItem(`lh:${channel}`, JSON.stringify({key, message}));
+            STORAGE_LOCATION.setItem(`lh:${channel}`, JSON.stringify({ key, message }));
           });
           newContainer[channel] = newChannel;
           return;
@@ -77,8 +77,8 @@ export default class CrossWindow extends Component {
 
     // handler stored as reference for unmounting
     this.storageEventHandler = (storageEvent) => {
-      const { key } = storageEvent;
-      if (!key || !key.startsWith('lh:')) {
+      const eventKey = storageEvent.key;
+      if (!eventKey || !eventKey.startsWith('lh:')) {
         return;
       }
       const { channels, channelsContainer } = this.state;
@@ -90,7 +90,7 @@ export default class CrossWindow extends Component {
 
       channels.forEach((channel) => {
         const channelKey = `lh:${channel}`;
-        if (key !== channelKey) {
+        if (eventKey !== channelKey) {
           return;
         }
         const { newValue } = storageEvent;
