@@ -85,7 +85,7 @@ function FuncComponent(props) {
     <button onClick={buttonClickHandler}>
       Press me
     </button>
-  )
+  );
 }
 
 // wrap the component using Loud Hailer before exporting
@@ -112,6 +112,24 @@ const options = {
   property: 'pipe'
 };
 export default loudHailer(FuncComponent, options);
+````
+
+You can even further simplify your component as such:
+
+````javascript
+import loudHailer from 'react-lh';
+
+export default loudHailer(({ channel }) => {
+  const buttonClickHandler = () => {
+    channel.emit('ButtonClicked');
+  };
+
+  return (
+    <button onClick={buttonClickHandler}>
+      Press me
+    </button>
+  );
+});
 ````
 
 ### Cross-Window Event Propagation
