@@ -7,7 +7,7 @@ const PROPERTY_CHANNEL_PROP_NAME = 'property';
 const PROPERTY_CHANNEL_PROP_NAME_DEFAULT = 'channel';
 const STATE_PROPERTY_NAME = 'instance';
 
-export default function wrapper(WrappedComponent, options) {
+export default function wrapper(WrappedComponent, options = {}) {
   const namespace = getProperty(options, PROPERTY_NAMESPACE);
   const channelPropertyName = getProperty(
     options,

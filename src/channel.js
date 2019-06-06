@@ -1,13 +1,9 @@
 import filterIsNot from './utils/filterIsNot';
+import { DEFAULT_NAMESPACE } from './utils/constants';
 
 const channels = {};
 
-export function createChannel(instance, namespaceArg) {
-  let namespace = namespaceArg;
-  if (namespace === undefined) {
-    namespace = 'default';
-  }
-
+export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPACE) {
   if (channels[namespace] === undefined) {
     channels[namespace] = [];
   }

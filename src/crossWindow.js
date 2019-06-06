@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { createChannel } from './channel';
 import iterateObject from './utils/iterateObject';
+import { DEFAULT_NAMESPACE } from './utils/constants';
 
 const STORAGE_EVENT_KEY = 'storage';
 const STORAGE_LOCATION = window.localStorage;
@@ -20,7 +21,7 @@ export default class CrossWindow extends Component {
 
   static get defaultProps() {
     return {
-      channels: ['default'],
+      channels: [DEFAULT_NAMESPACE],
       children: []
     };
   }
@@ -74,6 +75,7 @@ export default class CrossWindow extends Component {
       channelsContainer: {}
     };
 
+    // handler stored as reference for unmounting
     this.storageEventHandler = (storageEvent) => {
       const { key } = storageEvent;
       if (!key || !key.startsWith('lh:')) {
