@@ -19,5 +19,5 @@ test('emit successfully', () => {
     </CrossWindow>
   );
 
-  expect(localStorage.setItem).toHaveBeenLastCalledWith('lh:default:TestComponent:created', '[]');
+  expect(localStorage.setItem).toHaveBeenLastCalledWith('lh:default', '{"key":"TestComponent:created","message":[]}');
 });
