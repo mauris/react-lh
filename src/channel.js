@@ -3,13 +3,29 @@ import { DEFAULT_NAMESPACE } from './utils/constants';
 
 const channels = {};
 
+const appendFunctions = (funcA, funcB) => {
+  return (...args) => {
+    funcA(...args);
+    funcB(...args);
+  };
+};
+
 export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPACE) {
   if (channels[namespace] === undefined) {
-    channels[namespace] = [];
+    channels[namespace] = {
+      handlers: [],
+      store: {}
+    };
   }
+
+  const namespaceStore = channels[namespace].store;
 
   const handlers = {};
   let anyKeyHandlers = [];
+
+  // flags
+  let hasRegisteredGlobally = false;
+  let hasUnsubscribed = false;
 
   /*
    * Handler function for this channel to receive
@@ -29,16 +45,14 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
     });
   };
 
-  let hasRegisteredGlobally = false;
   const addChannelSuperHandler = () => {
     if (hasRegisteredGlobally) {
       return;
     }
-    channels[namespace].push([instance, superHandler]);
+    const { handlers } = channels[namespace];
+    handlers.push([instance, superHandler]);
     hasRegisteredGlobally = true;
   };
-
-  let hasUnsubscribed = false;
 
   const subscribeInit = (callback) => {
     if (hasUnsubscribed) {
@@ -48,14 +62,9 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
     callback();
   };
 
-  const appendFunctions = (funcA, funcB) => {
-    return (...args) => {
-      funcA(...args);
-      funcB(...args);
-    };
-  };
-
   const channelObj = {
+    store: namespaceStore,
+
     on: (key, handler) => {
       subscribeInit(() => {
         if (handlers[key] === undefined) {
