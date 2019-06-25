@@ -1,4 +1,9 @@
-import loudHailer, { wrapper, createChannel, CrossWindow, useLoudHailer } from '../src';
+import loudHailer, {
+  wrapper,
+  createChannel,
+  CrossWindow,
+  useLoudHailer
+} from '../src';
 
 test('loudHailer exported successfully', () => {
   expect(typeof loudHailer).toBe('function');
