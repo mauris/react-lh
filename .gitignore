@@ -176,3 +176,5 @@ $RECYCLE.BIN/
 lib/
 dist/
 es/
+
+package-lock.json
