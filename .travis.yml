@@ -7,9 +7,9 @@ node_js:
   - 11
   - 12
   - 13
-  - 14
-  - "lts/10"
-  - "lts/12"
+  - "lts/carbon"
+  - "lts/dubnium"
+  - "lts/erbium"
 os:
   - linux
   - osx
