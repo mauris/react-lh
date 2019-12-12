@@ -17,5 +17,5 @@ export default function useLoudHailer(callback, ...args) {
       // clean up
       channel.unsubscribe();
     };
-  });
+  }, ...args);
 }
