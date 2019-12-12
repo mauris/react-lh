@@ -72,6 +72,7 @@ export default loudHailer(MyComponent);
 In the case of a function component:
 
 ````javascript
+import React from 'react';
 import loudHailer from 'react-lh';
 
 function FuncComponent(props) {
@@ -95,6 +96,7 @@ export default loudHailer(FuncComponent);
 By default, the Loud Hailer API will be accessible through the `channel` props property. The property name can be changed by passing an option to Loud Hailer wrapper's second options argument like this:
 
 ````javascript
+import React from 'react';
 import loudHailer from 'react-lh';
 
 function FuncComponent(props) {
@@ -117,6 +119,7 @@ export default loudHailer(FuncComponent, options);
 You can even further simplify your component as such:
 
 ````javascript
+import React from 'react';
 import loudHailer from 'react-lh';
 
 export default loudHailer(({ channel }) => {
@@ -130,6 +133,30 @@ export default loudHailer(({ channel }) => {
     </button>
   );
 });
+````
+
+### React Hooks
+
+For React 16.8 or higher, `useLoudHailer` is a built-in Effect Hook available for function components. The hook will automatically unsubscribe and clean up channels created in the effect hook.
+
+````javascript
+import React, { useState } from 'react';
+import { useLoudHailer } from 'react-lh';
+
+export default (props) => {
+  const [value, setValue] = useState('none');
+  useLoudHailer((channel) => {
+    channel.on('valueGiven', (newValue) => {
+      setValue(newValue);
+    });
+  }, [setValue]);
+
+  return (
+    <span>
+      {`The value given was: ${value}`}
+    </span>
+  );
+};
 ````
 
 ### Cross-Window Event Propagation
