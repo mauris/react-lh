@@ -8,7 +8,7 @@ export default function useLoudHailer(callback, ...args) {
   }
   useEffect(() => {
     // setup
-    const channel = createChannel.apply(null, args);
+    const channel = createChannel(null);
 
     // execute callback with channel
     callback(channel);
