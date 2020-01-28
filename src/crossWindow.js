@@ -40,7 +40,7 @@ export default class CrossWindow extends Component {
       channels.forEach((channel) => {
         if (tempOldContainer[channel] === undefined) {
           // new one needs to be created
-          const newChannel = createChannel(channel);
+          const newChannel = createChannel(null, channel);
           newChannel.onAny((key, ...message) => {
             STORAGE_LOCATION.setItem(`lh:${channel}`, JSON.stringify({ key, message }));
           });
@@ -81,12 +81,13 @@ export default class CrossWindow extends Component {
       if (!eventKey || !eventKey.startsWith('lh:')) {
         return;
       }
-      const { channels, channelsContainer } = this.state;
 
       if (storageEvent.storageArea !== STORAGE_LOCATION) {
         // mismatched storage location
         return;
       }
+
+      const { channels, channelsContainer } = this.state;
 
       channels.forEach((channel) => {
         const channelKey = `lh:${channel}`;
