@@ -24,6 +24,7 @@ module.exports = {
   },
   plugins: [
     "import",
-    "react"
+    "react",
+    "deprecate"
   ]
 }
