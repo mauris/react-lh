@@ -2,7 +2,10 @@ import loudHailer, {
   wrapper,
   createChannel,
   CrossWindow,
-  useLoudHailer
+  useLoudHailer,
+  useChannel,
+  useOnEvent,
+  useOnceEvent
 } from '../src';
 
 test('loudHailer exported successfully', () => {
@@ -22,6 +25,18 @@ test('CrossWindow exported successfully', () => {
   expect(typeof CrossWindow).toBe('function');
 });
 
+test('useChannel exported successfully', () => {
+  expect(typeof useChannel).toBe('function');
+});
+
 test('useLoudHailer exported successfully', () => {
   expect(typeof useLoudHailer).toBe('function');
+});
+
+test('useOnEvent exported successfully', () => {
+  expect(typeof useOnEvent).toBe('function');
+});
+
+test('useOnceEvent exported successfully', () => {
+  expect(typeof useOnceEvent).toBe('function');
 });
