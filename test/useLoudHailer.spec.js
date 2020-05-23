@@ -48,9 +48,7 @@ FuncTestComponent.propTypes = {
   callback: PropTypes.func.isRequired
 };
 
-function FuncTestComponent2(props) {
-  const { callback, loadCallback, value } = props;
-
+function FuncTestComponent2({ callback, loadCallback, value }) {
   useLoudHailer((channel) => {
     loadCallback();
     channel.on('test:emit', (data) => {
@@ -104,11 +102,9 @@ test('test component prop dependency', () => {
   component.unmount();
 });
 
-function FuncTestComponent3(props) {
-  const {
-    callback, loadCallback, value1, value2
-  } = props;
-
+function FuncTestComponent3({
+  callback, loadCallback, value1, value2
+}) {
   useLoudHailer((channel) => {
     loadCallback();
     channel.on('test:emit', (data) => {
@@ -149,15 +145,13 @@ test('test component unrelated prop dependency', () => {
   expect(loadCallback.mock.calls.length).toBe(1);
 
   act(() => {
-    component.update(
-      <FuncTestComponent3 value1={1} value2={3} loadCallback={loadCallback} callback={callback} />
-    );
+    component.update(null);
   });
 
   // ensure unsubscribed
   const emitData2 = Math.ceil(Math.random() * 1000);
   channel.emit('test:emit', emitData2);
-  expect(counter).toBe(emitData2 + 1);
+  expect(counter).toBe(emitData + 1);
   expect(loadCallback.mock.calls.length).toBe(1);
 
   component.unmount();
