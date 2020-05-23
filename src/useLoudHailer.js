@@ -11,11 +11,14 @@ export default function useLoudHailer(callback, depsArg = undefined) {
     const channel = createChannel();
 
     // execute callback with channel
-    callback(channel);
+    const cleanup = callback(channel);
 
     return () => {
       // clean up
       channel.unsubscribe();
+      if (typeof cleanup === 'function') {
+        cleanup();
+      }
     };
   }, depsArg);
 }
