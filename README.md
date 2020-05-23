@@ -16,24 +16,24 @@ or if using Yarn:
 
 ## Usage
 
-*Recommended*: [Example Todo App on JSFiddle](https://jsfiddle.net/mauris/bzwm9f0n/) - The Todo App example demonstrates how facilitate inter-component communications and enable decoupling between them.
+_Recommended_: [Example Todo App on JSFiddle](https://jsfiddle.net/mauris/bzwm9f0n/) - The Todo App example demonstrates how facilitate inter-component communications and enable decoupling between them.
 
 The following examples uses the ECMA 9 features. If you wish to use it in CommonJS module system (i.e. in Node.js natively), you need to use `require()` like so:
 
-````javascript
+```javascript
 const reactlh = require('react-lh');
 const loudHailer = reactlh.loudHailer;
-````
+```
 
 or concisely as:
 
-````javascript
+```javascript
 const { loudHailer } = require('react-lh');
-````
+```
 
 After installing `react-lh` to your React app, you need to wrap components that you wish to access the Loud Hailer API with the `loudHailer()` function like that:
 
-````javascript
+```javascript
 import React, { Component } from 'react';
 import loudHailer from 'react-lh';
 
@@ -53,25 +53,21 @@ class MyComponent extends Component {
 
       // fires the event "ButtonClicked"
       channel.emit('ButtonClicked');
-    }
+    };
   }
 
   render() {
-    return (
-      <button onClick={this.renderButtonClickHandler()}>
-        Press me
-      </button>
-    );
+    return <button onClick={this.renderButtonClickHandler()}>Press me</button>;
   }
 }
 
 // wrap the component using Loud Hailer before exporting
 export default loudHailer(MyComponent);
-````
+```
 
 In the case of a function component:
 
-````javascript
+```javascript
 import React from 'react';
 import loudHailer from 'react-lh';
 
@@ -82,20 +78,16 @@ function FuncComponent(props) {
     channel.emit('ButtonClicked');
   };
 
-  return (
-    <button onClick={buttonClickHandler}>
-      Press me
-    </button>
-  );
+  return <button onClick={buttonClickHandler}>Press me</button>;
 }
 
 // wrap the component using Loud Hailer before exporting
 export default loudHailer(FuncComponent);
-````
+```
 
 By default, the Loud Hailer API will be accessible through the `channel` props property. The property name can be changed by passing an option to Loud Hailer wrapper's second options argument like this:
 
-````javascript
+```javascript
 import React from 'react';
 import loudHailer from 'react-lh';
 
@@ -111,14 +103,14 @@ function FuncComponent(props) {
 }
 
 const options = {
-  property: 'pipe'
+  property: 'pipe',
 };
 export default loudHailer(FuncComponent, options);
-````
+```
 
 You can even further simplify your component as such:
 
-````javascript
+```javascript
 import React from 'react';
 import loudHailer from 'react-lh';
 
@@ -127,43 +119,41 @@ export default loudHailer(({ channel }) => {
     channel.emit('ButtonClicked');
   };
 
-  return (
-    <button onClick={buttonClickHandler}>
-      Press me
-    </button>
-  );
+  return <button onClick={buttonClickHandler}>Press me</button>;
 });
-````
+```
 
 ### React Hooks
 
-For React 16.8 or higher, `useLoudHailer` is a built-in Effect Hook available for function components. The hook will automatically unsubscribe and clean up channels created in the effect hook.
+With the introduction of hooks in React 16.8 or later, you can use `react-lh`'s React Hooks:
 
-````javascript
+- `useChannel`
+- `useLoudHailer`
+- `useOnEvent`
+- `useOnceEvent`
+
+```javascript
 import React, { useState } from 'react';
 import { useLoudHailer } from 'react-lh';
 
 export default (props) => {
   const [value, setValue] = useState('none');
+
   useLoudHailer((channel) => {
     channel.on('valueGiven', (newValue) => {
       setValue(newValue);
     });
-  }, [setValue]);
+  }, []);
 
-  return (
-    <span>
-      {`The value given was: ${value}`}
-    </span>
-  );
+  return <span>{`The value given was: ${value}`}</span>;
 };
-````
+```
 
 ### Cross-Window Event Propagation
 
 It is possible for events emitted by components on one window to be propagated to another window through React Loud Hailer. This is made possible by browsers' localStorage API implementation. To enable this feature, you need to wrap your top-most component (e.g. `App`) with the Loud Hailer CrossWindow component like this:
 
-````javascript
+```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CrossWindow } from 'react-lh';
@@ -178,6 +168,6 @@ ReactDOM.render(
   </CrossWindow>,
   document.getElementById('root')
 );
-````
+```
 
 The `channels` property indicate which channels can be communicated across all the open windows of your website. The default channel namespace is `'default'`.
