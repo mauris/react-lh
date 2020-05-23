@@ -3,7 +3,7 @@ import { DEFAULT_NAMESPACE } from './utils/constants';
 
 const channels = {};
 
-const appendFunctions = (funcA, funcB) => {
+const composeFunctions = (funcA, funcB) => {
   return (...args) => {
     funcA(...args);
     funcB(...args);
@@ -75,7 +75,8 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
     },
 
     once: (key, handler) => {
-      const wrappedHandler = appendFunctions(handler, () => {
+      const wrappedHandler = composeFunctions(handler, () => {
+        // remove once it is fired.
         channelObj.remove(key, wrappedHandler);
       });
       channelObj.on(key, wrappedHandler);
@@ -88,7 +89,7 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
     },
 
     onceAny: (handler) => {
-      const wrappedHandler = appendFunctions(handler, () => {
+      const wrappedHandler = composeFunctions(handler, () => {
         channelObj.removeAny(wrappedHandler);
       });
       channelObj.onAny(wrappedHandler);
