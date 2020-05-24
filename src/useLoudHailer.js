@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { createChannel } from './channel';
 
-export default function useLoudHailer(callback, depsArg = undefined) {
+function useLoudHailer(callback, depsArg = []) {
   useEffect(() => {
     const channel = createChannel();
 
@@ -17,3 +17,5 @@ export default function useLoudHailer(callback, depsArg = undefined) {
     };
   }, [callback, ...depsArg]);
 }
+
+export default useLoudHailer;

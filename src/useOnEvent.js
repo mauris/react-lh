@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import useChannel from './useChannel';
 
-export default function useOnEvent(event, handler, depsArg = undefined) {
+function useOnEvent(event, handler, depsArg = []) {
   const channel = useChannel();
   useEffect(() => {
     // register handler
@@ -13,3 +13,5 @@ export default function useOnEvent(event, handler, depsArg = undefined) {
     };
   }, [channel, event, handler, ...depsArg]);
 }
+
+export default useOnEvent;

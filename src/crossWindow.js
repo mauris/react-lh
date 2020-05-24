@@ -8,7 +8,7 @@ import { DEFAULT_NAMESPACE } from './utils/constants';
 const STORAGE_EVENT_KEY = 'storage';
 const STORAGE_LOCATION = window.localStorage;
 
-export default class CrossWindow extends Component {
+class CrossWindow extends Component {
   static get propTypes() {
     return {
       channels: PropTypes.arrayOf(PropTypes.string),
@@ -117,3 +117,5 @@ export default class CrossWindow extends Component {
     return children;
   }
 }
+
+export default CrossWindow;

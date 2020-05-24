@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { createChannel } from './channel';
 
-export default function useChannel(...args) {
+function useChannel(...args) {
   return useMemo(() => createChannel(...args), args);
 }
+
+export default useChannel;
