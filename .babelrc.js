@@ -4,7 +4,7 @@ const setModules = cjs ? 'commonjs' : false;
 const loose = true;
 
 module.exports = {
-  presets: [['@babel/env', { loose, modules: setModules }]],
+  presets: [['@babel/env', { loose, modules: setModules }], 'minify'],
   plugins: [
     ['@babel/proposal-decorators', { legacy: true }],
     ['@babel/proposal-object-rest-spread', { loose }],
