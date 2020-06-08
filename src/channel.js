@@ -10,14 +10,15 @@ const composeFunctions = (funcA, funcB) => {
   };
 };
 
-export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPACE) {
+export function createChannel(namespace = DEFAULT_NAMESPACE) {
   if (channels[namespace] === undefined) {
     channels[namespace] = {
-      handlers: [],
+      handlers: {},
       store: {}
     };
   }
 
+  const channelSymbol = Symbol();
   const namespaceStore = channels[namespace].store;
 
   const channelHandlers = {};
@@ -45,19 +46,14 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
     });
   };
 
-  const addChannelSuperHandler = () => {
-    if (hasRegisteredGlobally) {
-      return;
-    }
-    channels[namespace].handlers.push([instance, superHandler]);
-    hasRegisteredGlobally = true;
-  };
-
   const subscribeInit = (callback) => {
     if (hasUnsubscribed) {
       return;
     }
-    addChannelSuperHandler();
+    if (!hasRegisteredGlobally) {
+      channels[namespace].handlers[channelSymbol] = superHandler;
+      hasRegisteredGlobally = true;
+    }
     callback();
   };
 
@@ -75,6 +71,9 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
     },
 
     once: (key, handler) => {
+      if (hasUnsubscribed) {
+        return;
+      }
       const wrappedHandler = composeFunctions(handler, () => {
         // remove once it is fired.
         channelObj.remove(key, wrappedHandler);
@@ -89,6 +88,9 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
     },
 
     onceAny: (handler) => {
+      if (hasUnsubscribed) {
+        return;
+      }
       const wrappedHandler = composeFunctions(handler, () => {
         channelObj.removeAny(wrappedHandler);
       });
@@ -96,7 +98,7 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
     },
 
     remove: (key, handler) => {
-      if (channelHandlers[key] === undefined) {
+      if (hasUnsubscribed || channelHandlers[key] === undefined) {
         return;
       }
 
@@ -104,6 +106,9 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
     },
 
     removeAny: (handler) => {
+      if (hasUnsubscribed) {
+        return;
+      }
       anyKeyChannelHandlers = filterIsNot(anyKeyChannelHandlers, handler);
     },
 
@@ -111,28 +116,34 @@ export function createChannel(instance = undefined, namespace = DEFAULT_NAMESPAC
       if (hasUnsubscribed) {
         return;
       }
-      channels[namespace].handlers
-        .forEach(([, remoteHandler]) => {
-          remoteHandler(key, message);
+      Object.getOwnPropertySymbols(channels[namespace].handlers)
+        .forEach((remoteHandlerSymbol) => {
+          channels[namespace].handlers[remoteHandlerSymbol](key, message);
         });
     },
 
     emitAsync: (...args) => {
-      setTimeout(() => {
+      if (hasUnsubscribed) {
+        return;
+      }
+      setImmediate(() => {
         channelObj.emit(...args);
-      }, 0);
+      });
     },
 
     unsubscribe: () => {
       if (hasUnsubscribed) {
         return;
       }
-      if (hasRegisteredGlobally) {
-        channels[namespace].handlers = channels[namespace]
-          .handlers
-          .filter(n => n[0] !== instance);
-      }
+      anyKeyChannelHandlers = [];
+      Object.keys(channelHandlers).forEach((key) => {
+        delete channelHandlers[key];
+      });
       hasUnsubscribed = true;
+      if (!hasRegisteredGlobally) {
+        return;
+      }
+      delete channels[namespace].handlers[channelSymbol];
     }
   };
 
