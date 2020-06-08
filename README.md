@@ -149,6 +149,27 @@ export default (props) => {
 };
 ```
 
+Or more concisely using `useOnEvent`:
+
+```javascript
+import React, { useState } from 'react';
+import { useOnEvent } from 'react-lh';
+
+export default (props) => {
+  const [value, setValue] = useState('none');
+
+  useOnEvent(
+    'valueGiven',
+    (newValue) => {
+      setValue(newValue);
+    },
+    []
+  );
+
+  return <span>{`The value given was: ${value}`}</span>;
+};
+```
+
 ### Cross-Window Event Propagation
 
 It is possible for events emitted by components on one window to be propagated to another window through React Loud Hailer. This is made possible by browsers' localStorage API implementation. To enable this feature, you need to wrap your top-most component (e.g. `App`) with the Loud Hailer CrossWindow component like this:
