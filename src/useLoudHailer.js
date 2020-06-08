@@ -1,12 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { createChannel } from './channel';
 
-function useLoudHailer(callback, depsArg = []) {
+function useLoudHailer(handler, depsArg = [], namespace = undefined) {
+  const memoizedHandler = useCallback(handler, depsArg);
   useEffect(() => {
-    const channel = createChannel();
+    const channel = createChannel(namespace);
 
     // execute callback with channel
-    const cleanup = callback(channel);
+    const cleanup = memoizedHandler(channel);
 
     return () => {
       // clean up
@@ -15,7 +16,7 @@ function useLoudHailer(callback, depsArg = []) {
         cleanup();
       }
     };
-  }, [callback, ...depsArg]);
+  }, [memoizedHandler]);
 }
 
 export default useLoudHailer;

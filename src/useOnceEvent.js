@@ -1,15 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import useChannel from './useChannel';
 
-function useOnceEvent(event, handler, depsArg = []) {
-  const channel = useChannel();
+function useOnceEvent(event, handler, depsArg = [], namespace = undefined) {
+  const channel = useChannel(namespace);
+  const memoizedHandler = useCallback(handler, depsArg);
   useEffect(() => {
     // register handler
     let hasFired = false;
-    channel.once(event, (...args) => {
-      handler(args);
+    const internalHandler = (...args) => {
+      memoizedHandler(args);
       hasFired = true;
-    });
+    };
+    channel.once(event, internalHandler);
 
     return () => {
       // clean up
@@ -18,9 +20,9 @@ function useOnceEvent(event, handler, depsArg = []) {
       }
 
       // yet to be fired, remove from channel
-      channel.remove(event, handler);
+      channel.remove(event, internalHandler);
     };
-  }, [channel, event, handler, ...depsArg]);
+  }, [channel, event, memoizedHandler]);
 }
 
 export default useOnceEvent;
