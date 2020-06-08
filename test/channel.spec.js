@@ -16,7 +16,11 @@ test('createChannel creates an instance', () => {
   const channel = createChannel();
   expect(typeof channel).toBe('object');
   expect(typeof channel.on).toBe('function');
+  expect(typeof channel.onAny).toBe('function');
+  expect(typeof channel.once).toBe('function');
+  expect(typeof channel.onceAny).toBe('function');
   expect(typeof channel.emit).toBe('function');
+  expect(typeof channel.emitAsync).toBe('function');
   expect(typeof channel.unsubscribe).toBe('function');
 });
 
