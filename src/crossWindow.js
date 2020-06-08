@@ -40,7 +40,7 @@ class CrossWindow extends Component {
       channels.forEach((channel) => {
         if (tempOldContainer[channel] === undefined) {
           // new one needs to be created
-          const newChannel = createChannel(null, channel);
+          const newChannel = createChannel(channel);
           newChannel.onAny((key, ...message) => {
             STORAGE_LOCATION.setItem(`lh:${channel}`, JSON.stringify({ key, message }));
           });

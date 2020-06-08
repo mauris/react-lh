@@ -32,7 +32,7 @@ function wrapper(WrappedComponent, options = {}) {
 
     constructor(props) {
       super(props);
-      const channel = createChannel(this, namespace);
+      const channel = createChannel(namespace);
       const { unsubscribe, ...userChannel } = channel;
       this.unsubscribe = unsubscribe;
       this.state = {

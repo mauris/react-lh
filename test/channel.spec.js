@@ -65,8 +65,8 @@ test('channel can add more than one handler to same key', () => {
 });
 
 test('two channels of differnt namespace should not communicate', () => {
-  const channelA = createChannel(null, 'ns1');
-  const channelB = createChannel(null, 'ns2');
+  const channelA = createChannel('ns1');
+  const channelB = createChannel('ns2');
 
   let counterReceived = 0;
   let counterSent = 0;
