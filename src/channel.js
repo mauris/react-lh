@@ -17,9 +17,8 @@ export function createChannel(namespace = DEFAULT_NAMESPACE) {
       store: {}
     };
   }
-
+  const nsChannel = channels[namespace];
   const channelSymbol = Symbol();
-  const namespaceStore = channels[namespace].store;
 
   const channelHandlers = {};
   let anyKeyChannelHandlers = [];
@@ -51,14 +50,14 @@ export function createChannel(namespace = DEFAULT_NAMESPACE) {
       return;
     }
     if (!hasRegisteredGlobally) {
-      channels[namespace].handlers[channelSymbol] = superHandler;
+      nsChannel.handlers[channelSymbol] = superHandler;
       hasRegisteredGlobally = true;
     }
     callback();
   };
 
   const channelObj = {
-    store: namespaceStore,
+    store: nsChannel.store,
 
     on: (key, handler) => {
       subscribeInit(() => {
@@ -116,9 +115,11 @@ export function createChannel(namespace = DEFAULT_NAMESPACE) {
       if (hasUnsubscribed) {
         return;
       }
-      Object.getOwnPropertySymbols(channels[namespace].handlers)
-        .forEach((remoteHandlerSymbol) => {
-          channels[namespace].handlers[remoteHandlerSymbol](key, message);
+      Object.getOwnPropertySymbols(nsChannel.handlers)
+        .map(remoteHandlerSymbol => nsChannel.handlers[remoteHandlerSymbol])
+        .filter(handler => Boolean(handler))
+        .forEach((handler) => {
+          handler(key, message);
         });
     },
 
@@ -143,7 +144,7 @@ export function createChannel(namespace = DEFAULT_NAMESPACE) {
       if (!hasRegisteredGlobally) {
         return;
       }
-      delete channels[namespace].handlers[channelSymbol];
+      delete nsChannel.handlers[channelSymbol];
     }
   };
 
