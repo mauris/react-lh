@@ -116,8 +116,8 @@ export function createChannel(namespace = DEFAULT_NAMESPACE) {
         return;
       }
       Object.getOwnPropertySymbols(nsChannel.handlers)
-        .map(remoteHandlerSymbol => nsChannel.handlers[remoteHandlerSymbol])
-        .filter(handler => Boolean(handler))
+        .map((remoteHandlerSymbol) => nsChannel.handlers[remoteHandlerSymbol])
+        .filter((handler) => typeof handler === 'function')
         .forEach((handler) => {
           handler(key, message);
         });
