@@ -127,9 +127,9 @@ export function createChannel(namespace = DEFAULT_NAMESPACE) {
       if (hasUnsubscribed) {
         return;
       }
-      setImmediate(() => {
+      setTimeout(() => {
         channelObj.emit(...args);
-      });
+      }, 0);
     },
 
     unsubscribe: () => {
