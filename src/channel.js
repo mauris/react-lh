@@ -20,7 +20,7 @@ export function createChannel(namespace = DEFAULT_NAMESPACE) {
   const nsChannel = channels[namespace];
   const channelSymbol = Symbol();
 
-  const channelHandlers = {};
+  let channelHandlers = {};
   let anyKeyChannelHandlers = [];
 
   // flags
@@ -137,9 +137,7 @@ export function createChannel(namespace = DEFAULT_NAMESPACE) {
         return;
       }
       anyKeyChannelHandlers = [];
-      Object.keys(channelHandlers).forEach((key) => {
-        delete channelHandlers[key];
-      });
+      channelHandlers = {};
       hasUnsubscribed = true;
       if (!hasRegisteredGlobally) {
         return;
