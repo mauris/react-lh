@@ -156,3 +156,71 @@ test('test component unrelated prop dependency', () => {
 
   component.unmount();
 });
+
+test('test multiple components will receive message', () => {
+  let counter = 0;
+
+  const loadCallback = jest.fn();
+
+  const callback = (data, value) => {
+    counter += data + value;
+  };
+
+  let numComponents = 1000;
+  let component;
+  act(() => {
+    component = renderer.create(
+      <span>
+        {Array.from({ length: numComponents }, (_, i) => i + 1).map((id) => (
+          <FuncTestComponent3
+            key={id}
+            value1={1}
+            value2={2}
+            loadCallback={loadCallback}
+            callback={callback}
+          />
+        ))}
+      </span>
+    );
+  });
+
+  const channel = createChannel();
+  expect(loadCallback.mock.calls.length).toBe(numComponents);
+
+  const emitData = Math.ceil(Math.random() * 1000);
+  channel.emit('test:emit', emitData);
+  expect(counter).toBe((emitData + 1) * numComponents);
+
+  numComponents = 500;
+  counter = 0;
+  act(() => {
+    component.update(
+      <span>
+        {Array.from({ length: numComponents }, (_, i) => i + 1).map((id) => (
+          <FuncTestComponent3
+            key={id}
+            value1={2}
+            value2={2}
+            loadCallback={loadCallback}
+            callback={callback}
+          />
+        ))}
+      </span>
+    );
+  });
+  const emitData2 = Math.ceil(Math.random() * 1000);
+  channel.emit('test:emit', emitData2);
+  expect(counter).toBe((emitData2 + 2) * numComponents);
+
+  act(() => {
+    component.update(null);
+  });
+
+  // ensure unsubscribed
+  const emitData3 = Math.ceil(Math.random() * 1000);
+  channel.emit('test:emit', emitData3);
+  expect(counter).toBe((emitData2 + 2) * numComponents);
+  expect(loadCallback.mock.calls.length).toBe(1500);
+
+  component.unmount();
+});
